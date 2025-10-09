@@ -1,6 +1,5 @@
 import axios from 'axios';
 import { API_CONFIG } from '../constants/api.constants';
-import storage from '../utils/storage';
 import { authInterceptor } from './interceptors/auth.interceptor';
 import { errorInterceptor } from './interceptors/error.interceptor';
 
@@ -10,20 +9,20 @@ const apiClient = axios.create({
   timeout: API_CONFIG.TIMEOUT,
   headers: {
     'Content-Type': 'application/json',
+    'ngrok-skip-browser-warning': 'true', // ✅ Add this to skip ngrok warning
   },
-  withCredentials: false,
 });
 
-// Request Interceptor
+// Request interceptor
 apiClient.interceptors.request.use(
-  (config) => authInterceptor(config),
+  authInterceptor,
   (error) => Promise.reject(error)
 );
 
-// Response Interceptor
+// Response interceptor
 apiClient.interceptors.response.use(
   (response) => response,
-  (error) => errorInterceptor(error, apiClient)
+  errorInterceptor
 );
 
 export default apiClient;
