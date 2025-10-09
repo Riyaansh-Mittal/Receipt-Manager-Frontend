@@ -6,7 +6,7 @@ import { useEffect, useRef, useCallback } from 'react';
  */
 export const usePolling = (
   callback,
-  interval = 1500,
+  interval = import.meta.env.VITE_POLLING_INTERVAL,
   options = {}
 ) => {
   const {
