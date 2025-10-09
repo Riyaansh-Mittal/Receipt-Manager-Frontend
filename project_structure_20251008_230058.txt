@@ -1,0 +1,97 @@
+﻿public/
+    vite.svg
+src/
+    api/
+        interceptors/
+            auth.interceptor.js
+            error.interceptor.js
+        services/
+            auth.service.js
+        client.js
+    assets/
+        react.svg
+    components/
+        feedback/
+            EmptyState.jsx
+            ErrorBoundary.jsx
+            ErrorState.jsx
+            LoadingState.jsx
+        layout/
+            AuthLayout.jsx
+            Header.jsx
+            MainLayout.jsx
+            Sidebar.jsx
+        ui/
+            Badge.jsx
+            Button.jsx
+            Card.jsx
+            Input.jsx
+            Spinner.jsx
+            Toast.jsx
+    constants/
+        api.constants.js
+        error.constants.js
+        routes.constants.js
+        status.constants.js
+    features/
+        auth/
+            components/
+                EmailVerification.jsx
+                MagicLinkForm.jsx
+                ProfileForm.jsx
+                UserStats.jsx
+            hooks/
+                useAuth.js
+                useMagicLink.js
+                useProfile.js
+                useTokenRefresh.js
+            pages/
+                LoginPage.jsx
+                ProfilePage.jsx
+                VerifyEmailPage.jsx
+        dashboard/
+            pages/
+                DashboardPage.jsx
+    guards/
+        AuthGuard.jsx
+        GuestGuard.jsx
+        PermissionGuard.jsx
+    hooks/
+        useAsync.js
+        useClickOutside.js
+        useDebounce.js
+        useLocalStorage.js
+    routes/
+        index.jsx
+    store/
+        slices/
+            auth.slice.js
+            notification.slice.js
+            ui.slice.js
+        index.js
+        rootReducer.js
+    styles/
+        index.css
+        variables.css
+    utils/
+        date.js
+        storage.js
+        tabSync.js
+        validators.js
+    App.css
+    App.jsx
+    main.jsx
+.eslintrc.cjs
+eslint.config.js
+generate-tree.ps1
+index.html
+jsconfig.json
+package.json
+package-lock.json
+postcss.config.cjs
+project_structure_20251008_230020.txt
+project_structure_20251008_230058.txt
+README.md
+structure.txt
+tailwind.config.js
+vite.config.js
