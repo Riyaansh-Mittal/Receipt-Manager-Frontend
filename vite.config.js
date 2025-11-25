@@ -31,8 +31,13 @@ export default defineConfig({
   },
   build: {
     outDir: 'dist',
-    sourcemap: true,
+    sourcemap: false, // Changed to false for production (smaller bundle)
     rollupOptions: {
+      // ✅ Add multi-page input configuration
+      input: {
+        main: path.resolve(__dirname, 'index.html'),            // React app entry
+        landing: path.resolve(__dirname, 'public/landing.html') // Static landing page
+      },
       output: {
         manualChunks: {
           'react-vendor': ['react', 'react-dom', 'react-router-dom'],

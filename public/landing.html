@@ -1,0 +1,1305 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>METACFO AI – Your Business, Explained.</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="METACFO is your AI CFO – automatically categorizing expenses, connecting all your accounts, and explaining your true profit in real time."
+    />
+    <style>
+      :root {
+        --bg: #f5f7fb;
+        --surface: #ffffff;
+        --text: #050816;
+        --muted: #6b7280;
+        --accent: #2563eb;
+        --accent-soft: rgba(37, 99, 235, 0.08);
+        --border: #e5e7eb;
+        --radius-lg: 18px;
+        --radius-md: 12px;
+        --radius-sm: 8px;
+        --shadow-soft: 0 18px 45px rgba(15, 23, 42, 0.08);
+        --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+          "Segoe UI", sans-serif;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: var(--font-sans);
+        background: radial-gradient(
+          circle at top left,
+          #eef2ff 0,
+          #f9fafb 45%,
+          #f3f4f6 100%
+        );
+        color: var(--text);
+        -webkit-font-smoothing: antialiased;
+        line-height: 1.5;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      img {
+        max-width: 100%;
+        display: block;
+      }
+
+      .page {
+        max-width: 1120px;
+        margin: 0 auto;
+        padding: 24px 20px 64px;
+      }
+
+      /* Header */
+
+      header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 36px;
+      }
+
+      .logo {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .logo-mark {
+        width: 32px;
+        height: 32px;
+        border-radius: 12px;
+        background: conic-gradient(
+          from 220deg,
+          #2563eb,
+          #4f46e5,
+          #0ea5e9,
+          #22c55e,
+          #2563eb
+        );
+        position: relative;
+        overflow: hidden;
+      }
+
+      .logo-mark::after {
+        content: "";
+        position: absolute;
+        inset: 7px;
+        border-radius: 8px;
+        background: rgba(248, 250, 252, 0.96);
+      }
+
+      .logo-text {
+        font-weight: 600;
+        font-size: 18px;
+        letter-spacing: 0.02em;
+      }
+
+      .nav {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        font-size: 14px;
+        color: var(--muted);
+      }
+
+      .nav a:hover {
+        color: var(--text);
+      }
+
+      .nav-cta {
+        padding: 8px 16px;
+        border-radius: 999px;
+        border: 1px solid rgba(148, 163, 184, 0.5);
+        background: rgba(255, 255, 255, 0.9);
+        backdrop-filter: blur(12px);
+        box-shadow: 0 10px 30px rgba(15, 23, 42, 0.04);
+        color: var(--text);
+        font-weight: 500;
+      }
+
+      /* Hero */
+
+      .hero {
+        display: grid;
+        grid-template-columns: minmax(0, 1.15fr) minmax(0, 1.1fr);
+        gap: 40px;
+        align-items: center;
+        margin-bottom: 72px;
+      }
+
+      .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 4px 10px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.9);
+        border: 1px solid rgba(148, 163, 184, 0.5);
+        color: var(--muted);
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        margin-bottom: 16px;
+      }
+
+      .eyebrow-dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 999px;
+        background: #22c55e;
+        box-shadow: 0 0 0 5px rgba(34, 197, 94, 0.25);
+      }
+
+      .hero h1 {
+        font-size: 40px;
+        line-height: 1.05;
+        letter-spacing: -0.04em;
+        margin-bottom: 18px;
+      }
+
+      .hero h1 span {
+        background: linear-gradient(120deg, #2563eb, #0ea5e9);
+        -webkit-background-clip: text;
+        color: transparent;
+      }
+
+      .hero-sub {
+        font-size: 15px;
+        color: var(--muted);
+        max-width: 420px;
+        margin-bottom: 24px;
+      }
+
+      .hero-ctas {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        margin-bottom: 18px;
+      }
+
+      .btn-primary {
+        padding: 11px 20px;
+        border-radius: 999px;
+        border: none;
+        background: linear-gradient(135deg, #2563eb, #4f46e5);
+        color: #f9fafb;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        box-shadow: 0 18px 40px rgba(37, 99, 235, 0.35);
+      }
+
+      .btn-primary:hover {
+        opacity: 0.94;
+      }
+
+      .btn-ghost {
+        padding: 9px 18px;
+        border-radius: 999px;
+        border: 1px solid rgba(148, 163, 184, 0.7);
+        background: rgba(255, 255, 255, 0.8);
+        font-size: 13px;
+        color: var(--muted);
+        cursor: pointer;
+      }
+
+      .btn-ghost:hover {
+        border-color: #94a3b8;
+        color: var(--text);
+      }
+
+      .hero-footnote {
+        font-size: 11px;
+        color: #9ca3af;
+      }
+
+      .hero-footnote strong {
+        color: var(--text);
+        font-weight: 500;
+      }
+
+      .hero-card {
+        position: relative;
+        border-radius: 28px;
+        background: radial-gradient(
+          circle at top left,
+          #e0ecff 0,
+          #ffffff 40%,
+          #f4f4fb 100%
+        );
+        padding: 18px 18px 18px 18px;
+        box-shadow: var(--shadow-soft);
+        border: 1px solid rgba(209, 213, 219, 0.9);
+      }
+
+      .hero-tag {
+        font-size: 11px;
+        color: var(--muted);
+        margin-bottom: 10px;
+      }
+
+      .hero-image {
+        border-radius: 22px;
+        overflow: hidden;
+        background: #020617;
+      }
+
+      .hero-caption {
+        position: absolute;
+        right: 22px;
+        bottom: 22px;
+        padding: 10px 13px;
+        border-radius: 16px;
+        background: rgba(15, 23, 42, 0.85);
+        color: #e5e7eb;
+        font-size: 11px;
+        max-width: 220px;
+        backdrop-filter: blur(18px);
+      }
+
+      .hero-caption span {
+        display: block;
+        color: #a5b4fc;
+        font-size: 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        margin-bottom: 2px;
+      }
+
+      /* Sections */
+
+      section {
+        margin-bottom: 60px;
+      }
+
+      .section-heading {
+        font-size: 24px;
+        letter-spacing: -0.03em;
+        margin-bottom: 10px;
+      }
+
+      .section-sub {
+        color: var(--muted);
+        font-size: 14px;
+        max-width: 480px;
+        margin-bottom: 26px;
+      }
+
+      /* Problem section */
+
+      .problem-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+        gap: 28px;
+      }
+
+      .problem-list {
+        list-style: none;
+        border-radius: var(--radius-lg);
+        background: rgba(255, 255, 255, 0.9);
+        border: 1px solid var(--border);
+        padding: 16px 18px;
+        box-shadow: 0 10px 26px rgba(148, 163, 184, 0.15);
+        font-size: 14px;
+        color: var(--muted);
+      }
+
+      .problem-list li {
+        padding: 6px 0;
+        display: flex;
+        gap: 8px;
+      }
+
+      .problem-list li::before {
+        content: "•";
+        color: #ef4444;
+        font-size: 18px;
+        line-height: 1;
+        margin-top: 1px;
+      }
+
+      .problem-note {
+        font-size: 12px;
+        color: #9ca3af;
+        margin-top: 10px;
+      }
+
+      .quote-card {
+        border-radius: var(--radius-lg);
+        background: rgba(15, 23, 42, 0.95);
+        color: #e5e7eb;
+        padding: 18px 18px 16px;
+        box-shadow: var(--shadow-soft);
+        font-size: 13px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .quote-card::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(
+          circle at top right,
+          rgba(56, 189, 248, 0.11),
+          transparent 60%
+        );
+        pointer-events: none;
+      }
+
+      .quote-author {
+        margin-top: 10px;
+        font-size: 12px;
+        color: #9ca3af;
+      }
+
+      /* Features */
+
+      .feature-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 18px;
+      }
+
+      .feature-card {
+        border-radius: var(--radius-md);
+        background: rgba(255, 255, 255, 0.96);
+        border: 1px solid var(--border);
+        padding: 14px 14px 16px;
+        font-size: 13px;
+        color: var(--muted);
+      }
+
+      .feature-title {
+        font-weight: 600;
+        margin-bottom: 6px;
+        color: var(--text);
+        font-size: 14px;
+      }
+
+      .feature-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        font-size: 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        background: var(--accent-soft);
+        color: #1d4ed8;
+        padding: 3px 8px;
+        border-radius: 999px;
+        margin-bottom: 8px;
+      }
+
+      .feature-pill-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 999px;
+        background: #3b82f6;
+      }
+
+      /* Difference */
+
+      .difference-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 14px;
+        font-size: 12px;
+      }
+
+      .difference-col {
+        border-radius: var(--radius-md);
+        background: rgba(255, 255, 255, 0.94);
+        border: 1px solid var(--border);
+        overflow: hidden;
+      }
+
+      .difference-head {
+        padding: 9px 12px;
+        font-weight: 600;
+        border-bottom: 1px solid var(--border);
+        font-size: 13px;
+      }
+
+      .difference-body {
+        padding: 10px 12px 12px;
+        color: var(--muted);
+      }
+
+      .difference-col.highlight {
+        border-color: rgba(37, 99, 235, 0.85);
+        box-shadow: 0 16px 32px rgba(37, 99, 235, 0.2);
+      }
+
+      /* Audience */
+
+      .audience-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 12px;
+        font-size: 12px;
+      }
+
+      .audience-card {
+        border-radius: var(--radius-md);
+        background: rgba(255, 255, 255, 0.95);
+        border: 1px solid var(--border);
+        padding: 10px 10px 11px;
+        color: var(--muted);
+      }
+
+      .audience-card strong {
+        display: block;
+        margin-bottom: 4px;
+        color: var(--text);
+        font-size: 13px;
+      }
+
+      /* Demo */
+
+      .demo-grid {
+        display: grid;
+        grid-template-columns: 1.1fr 0.9fr;
+        gap: 18px;
+      }
+
+      .demo-main {
+        border-radius: var(--radius-lg);
+        background: var(--surface);
+        border: 1px solid var(--border);
+        padding: 14px 14px 16px;
+        box-shadow: 0 15px 30px rgba(15, 23, 42, 0.08);
+      }
+
+      .demo-header {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        margin-bottom: 9px;
+        font-size: 13px;
+      }
+
+      .demo-header-label {
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.14em;
+        color: #9ca3af;
+      }
+
+      .demo-header-value {
+        font-weight: 600;
+        font-size: 13px;
+      }
+
+      .demo-chart {
+        height: 120px;
+        border-radius: 12px;
+        background: linear-gradient(
+          180deg,
+          rgba(37, 99, 235, 0.08),
+          rgba(15, 23, 42, 0.01)
+        );
+        position: relative;
+        overflow: hidden;
+        margin-bottom: 12px;
+      }
+
+      .demo-chart::after {
+        content: "";
+        position: absolute;
+        inset: 22% 6% 10% 6%;
+        border-radius: 999px;
+        border: 2px solid rgba(37, 99, 235, 0.85);
+        transform: skewX(-12deg);
+        box-shadow: 0 0 0 1px rgba(191, 219, 254, 0.85);
+      }
+
+      .demo-cols {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 10px;
+        margin-bottom: 10px;
+        font-size: 11px;
+      }
+
+      .demo-col {
+        padding: 8px;
+        border-radius: 10px;
+        background: #f9fafb;
+        border: 1px solid #e5e7eb;
+      }
+
+      .demo-col span {
+        display: block;
+        color: #6b7280;
+        margin-bottom: 3px;
+      }
+
+      .demo-col strong {
+        display: block;
+        font-size: 12px;
+        color: #111827;
+      }
+
+      .demo-pill-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        font-size: 10px;
+      }
+
+      .demo-pill {
+        padding: 4px 7px;
+        border-radius: 999px;
+        background: #eff6ff;
+        color: #1d4ed8;
+      }
+
+      .demo-side {
+        border-radius: var(--radius-lg);
+        background: #020617;
+        color: #e5e7eb;
+        padding: 14px 14px 12px;
+        box-shadow: 0 14px 34px rgba(15, 23, 42, 0.8);
+      }
+
+      .demo-side-label {
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.16em;
+        color: #9ca3af;
+        margin-bottom: 8px;
+      }
+
+      .chat-bubble {
+        border-radius: 12px;
+        background: rgba(15, 23, 42, 0.88);
+        border: 1px solid rgba(148, 163, 184, 0.6);
+        padding: 8px 9px;
+        font-size: 11px;
+        margin-bottom: 7px;
+      }
+
+      .chat-bubble span {
+        display: block;
+        color: #a5b4fc;
+        font-size: 10px;
+        margin-bottom: 3px;
+      }
+
+      .chat-input {
+        margin-top: 8px;
+        padding: 7px 8px;
+        border-radius: 999px;
+        border: 1px solid rgba(148, 163, 184, 0.7);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-size: 11px;
+        color: #9ca3af;
+        background: rgba(15, 23, 42, 0.75);
+      }
+
+      /* Pricing */
+
+      .pricing-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 16px;
+        align-items: stretch;
+      }
+
+      .pricing-card {
+        border-radius: var(--radius-lg);
+        background: rgba(255, 255, 255, 0.96);
+        border: 1px solid var(--border);
+        padding: 16px 16px 18px;
+        font-size: 13px;
+        color: var(--muted);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+      }
+
+      .pricing-card.highlight {
+        border-color: rgba(37, 99, 235, 0.88);
+        box-shadow: 0 18px 42px rgba(37, 99, 235, 0.25);
+        transform: translateY(-3px);
+      }
+
+      .pricing-name {
+        font-weight: 600;
+        color: var(--text);
+        margin-bottom: 4px;
+        font-size: 14px;
+      }
+
+      .pricing-price {
+        font-size: 20px;
+        font-weight: 600;
+        margin-bottom: 4px;
+        color: var(--text);
+      }
+
+      .pricing-price span {
+        font-size: 11px;
+        font-weight: 400;
+        color: var(--muted);
+        margin-left: 4px;
+      }
+
+      .pricing-list {
+        list-style: none;
+        margin-top: 8px;
+        margin-bottom: 10px;
+      }
+
+      .pricing-list li {
+        display: flex;
+        gap: 7px;
+        align-items: flex-start;
+        padding: 3px 0;
+        font-size: 12px;
+      }
+
+      .pricing-list li::before {
+        content: "✓";
+        color: #16a34a;
+        font-size: 12px;
+        margin-top: 1px;
+      }
+
+      .pricing-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 4px 8px;
+        font-size: 10px;
+        border-radius: 999px;
+        background: #ecfdf5;
+        color: #15803d;
+        margin-bottom: 6px;
+      }
+
+      .pricing-cta {
+        margin-top: 6px;
+        padding: 8px 10px;
+        border-radius: 999px;
+        text-align: center;
+        border: 1px solid rgba(148, 163, 184, 0.7);
+        font-size: 12px;
+        cursor: pointer;
+      }
+
+      .pricing-card.highlight .pricing-cta {
+        border-color: transparent;
+        background: linear-gradient(135deg, #2563eb, #4f46e5);
+        color: #eff6ff;
+        box-shadow: 0 14px 36px rgba(37, 99, 235, 0.45);
+      }
+
+      .pricing-note {
+        margin-top: 12px;
+        font-size: 11px;
+        color: #9ca3af;
+      }
+
+      /* Trust */
+
+      .trust-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+        gap: 20px;
+        font-size: 13px;
+        color: var(--muted);
+      }
+
+      .trust-pill-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 10px;
+      }
+
+      .trust-pill {
+        font-size: 11px;
+        padding: 5px 9px;
+        border-radius: 999px;
+        background: #f3f4ff;
+        color: #4f46e5;
+        border: 1px solid rgba(129, 140, 248, 0.5);
+      }
+
+      .badge-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 8px;
+      }
+
+      .badge {
+        font-size: 11px;
+        padding: 3px 8px;
+        border-radius: 999px;
+        background: rgba(15, 23, 42, 0.9);
+        color: #e5e7eb;
+      }
+
+      /* CTA */
+
+      .cta-final {
+        margin-top: 40px;
+        border-radius: 24px;
+        background: radial-gradient(
+          circle at top left,
+          #dbeafe 0,
+          #1e293b 40%,
+          #020617 100%
+        );
+        color: #e5e7eb;
+        padding: 24px 20px 22px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 18px;
+      }
+
+      .cta-final h2 {
+        font-size: 22px;
+        letter-spacing: -0.04em;
+        margin-bottom: 6px;
+      }
+
+      .cta-final p {
+        font-size: 13px;
+        color: #cbd5f5;
+      }
+
+      .cta-final-actions {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+
+      .cta-final .btn-primary {
+        box-shadow: 0 18px 42px rgba(15, 23, 42, 0.7);
+      }
+
+      .cta-final .btn-ghost {
+        border-color: rgba(148, 163, 184, 0.9);
+        background: rgba(15, 23, 42, 0.75);
+        color: #e5e7eb;
+      }
+
+      /* Footer */
+
+      footer {
+        margin-top: 30px;
+        padding-top: 18px;
+        border-top: 1px solid rgba(148, 163, 184, 0.35);
+        font-size: 11px;
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+        color: #9ca3af;
+        flex-wrap: wrap;
+      }
+
+      footer a {
+        color: inherit;
+      }
+
+      footer a:hover {
+        color: #6b7280;
+      }
+
+      /* Responsive */
+
+      @media (max-width: 960px) {
+        .hero {
+          grid-template-columns: minmax(0, 1fr);
+        }
+
+        .hero-card {
+          margin-top: 6px;
+        }
+
+        .problem-grid,
+        .demo-grid,
+        .trust-grid {
+          grid-template-columns: minmax(0, 1fr);
+        }
+
+        .feature-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .difference-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .audience-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .pricing-grid {
+          grid-template-columns: minmax(0, 1fr);
+        }
+
+        header {
+          gap: 12px;
+        }
+
+        .nav {
+          display: none; /* keep header minimal on mobile */
+        }
+      }
+
+      @media (max-width: 640px) {
+        .page {
+          padding: 20px 16px 48px;
+        }
+
+        .hero h1 {
+          font-size: 30px;
+        }
+
+        .section-heading {
+          font-size: 20px;
+        }
+
+        .feature-grid,
+        .difference-grid,
+        .audience-grid {
+          grid-template-columns: minmax(0, 1fr);
+        }
+
+        .cta-final {
+          padding: 18px 16px 18px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <header>
+        <div class="logo">
+          <div class="logo-mark"></div>
+          <div class="logo-text">METACFO</div>
+        </div>
+        <nav class="nav">
+          <a href="#problem">Why</a>
+          <a href="#features">Product</a>
+          <a href="#pricing">Pricing</a>
+          <a href="#trust">Why trust us</a>
+          <a href="#cta" class="nav-cta">Get early access</a>
+        </nav>
+      </header>
+
+      <!-- HERO -->
+      <section class="hero">
+        <div>
+          <div class="eyebrow">
+            <div class="eyebrow-dot"></div>
+            <span>AI CFO for modern founders</span>
+          </div>
+          <h1>Finally <span>understand your business</span>. Automatically.</h1>
+          <p class="hero-sub">
+            METACFO connects your accounts, categorizes every transaction, and
+            explains your true profit in real time. No spreadsheets, no manual
+            bookkeeping, no guessing.
+          </p>
+          <div class="hero-ctas">
+            <button class="btn-primary" onclick="window.location.href='/login'">
+              Get early access
+            </button>
+            <button class="btn-ghost">Watch 60-second demo</button>
+          </div>
+          <p class="hero-footnote">
+            <strong
+              >Built for solopreneurs, D2C brands, creators, and
+              agencies.</strong
+            >
+            Works alongside your existing accountant.
+          </p>
+        </div>
+        <div class="hero-card" aria-hidden="true">
+          <div class="hero-tag">Live view of your business</div>
+          <div class="hero-image">
+            <!-- Replace src with your own hero mockup image -->
+            <img src="hero-dashboard.png" alt="METACFO dashboard preview" />
+          </div>
+          <div class="hero-caption">
+            <span>AI CFO Insight</span>
+            Your profit dropped 18% last week because Meta Ads overspent by $432
+            while COGS stayed flat.
+          </div>
+        </div>
+      </section>
+
+      <!-- PROBLEM -->
+      <section id="problem">
+        <h2 class="section-heading">The financial chaos stops now.</h2>
+        <p class="section-sub">
+          Founders waste hours every month reconciling tools and still don’t
+          know where the money goes. METACFO turns all that noise into one
+          clear, trustworthy view.
+        </p>
+        <div class="problem-grid">
+          <ul class="problem-list">
+            <li>Receipts and invoices buried in email and WhatsApp.</li>
+            <li>
+              Shopify, Stripe, PayPal, and ad spend living in different tabs.
+            </li>
+            <li>Spreadsheets that are always “almost up to date”.</li>
+            <li>Endless back-and-forth with your bookkeeper.</li>
+            <li>Anxiety every time someone asks, “So what’s your margin?”</li>
+          </ul>
+          <div>
+            <div class="quote-card">
+              “I built a $400M analytics product at Adobe and still felt blind
+              in my own businesses. METACFO is the tool I wished existed — an AI
+              CFO that explains my numbers back to me.”
+              <div class="quote-author">
+                — Founder of METACFO, ex-Adobe analytics product lead
+              </div>
+            </div>
+            <p class="problem-note">
+              METACFO doesn’t try to replace your bank or accounting system. It
+              sits above them as your real-time financial brain.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- FEATURES -->
+      <section id="features">
+        <h2 class="section-heading">Your entire business, understood by AI.</h2>
+        <p class="section-sub">
+          METACFO connects all your money flows, categorizes them with AI, and
+          turns raw transactions into clean profit, cashflow, and runway.
+        </p>
+        <div class="feature-grid">
+          <div class="feature-card">
+            <div class="feature-pill">
+              <div class="feature-pill-dot"></div>
+              Auto-categorization
+            </div>
+            <div class="feature-title">Every transaction, sorted.</div>
+            Bank, card, Stripe, Shopify, PayPal — instantly categorized into
+            smart groups, not messy chart-of-accounts codes.
+          </div>
+          <div class="feature-card">
+            <div class="feature-pill">
+              <div class="feature-pill-dot"></div>
+              Receipts &amp; email
+            </div>
+            <div class="feature-title">Inbox to books in one step.</div>
+            Forward a receipt or invoice, and METACFO reads it, matches it to a
+            transaction, and files it — automatically.
+          </div>
+          <div class="feature-card">
+            <div class="feature-pill">
+              <div class="feature-pill-dot"></div>
+              Real profit
+            </div>
+            <div class="feature-title">Know what you really keep.</div>
+            Ad spend, COGS, refunds, fees — unified into a clean P&amp;L with
+            product-level and channel-level margin.
+          </div>
+          <div class="feature-card">
+            <div class="feature-pill">
+              <div class="feature-pill-dot"></div>
+              AI CFO chat
+            </div>
+            <div class="feature-title">Ask your business anything.</div>
+            “Why did profit drop?” “Which client is most profitable?” “How much
+            should I set aside for taxes?” Just ask.
+          </div>
+          <div class="feature-card">
+            <div class="feature-pill">
+              <div class="feature-pill-dot"></div>
+              Forecasting
+            </div>
+            <div class="feature-title">See around corners.</div>
+            METACFO projects your cash position, burn, and runway based on real
+            patterns — not wishful spreadsheets.
+          </div>
+          <div class="feature-card">
+            <div class="feature-pill">
+              <div class="feature-pill-dot"></div>
+              Tax-ready
+            </div>
+            <div class="feature-title">One export, zero panic.</div>
+            Generate tidy, tax-ready summaries your accountant can plug into
+            QuickBooks, Xero, or your filing tool.
+          </div>
+        </div>
+      </section>
+
+      <!-- DIFFERENCE -->
+      <section>
+        <h2 class="section-heading">
+          Not a bank. Not an accountant. Something 10× better.
+        </h2>
+        <p class="section-sub">
+          Mercury is where your money lives. QuickBooks is where your accountant
+          works. METACFO is where you finally understand your business.
+        </p>
+        <div class="difference-grid">
+          <div class="difference-col">
+            <div class="difference-head">Mercury</div>
+            <div class="difference-body">
+              Great for banking, cards, and basic dashboards — but only sees
+              what flows through Mercury, not your whole business.
+            </div>
+          </div>
+          <div class="difference-col">
+            <div class="difference-head">QuickBooks / Xero</div>
+            <div class="difference-body">
+              Built for accountants and compliance. Powerful, but complex, slow,
+              and rarely something founders enjoy opening.
+            </div>
+          </div>
+          <div class="difference-col highlight">
+            <div class="difference-head">METACFO</div>
+            <div class="difference-body">
+              Connects all your accounts, explains every change in plain
+              English, and gives you real-time clarity on profit, cashflow, and
+              runway.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- AUDIENCE -->
+      <section>
+        <h2 class="section-heading">
+          Built for the new generation of founders.
+        </h2>
+        <p class="section-sub">
+          If you live in Stripe, Shopify, Notion, Slack, or your DMs, METACFO is
+          your financial home base.
+        </p>
+        <div class="audience-grid">
+          <div class="audience-card">
+            <strong>Solopreneurs &amp; freelancers</strong>
+            Auto-expenses, clean cashflow, and simple tax estimates that don’t
+            require a finance degree.
+          </div>
+          <div class="audience-card">
+            <strong>Creators &amp; coaches</strong>
+            Track brand deals, programs, courses, and affiliate income across
+            platforms in one view.
+          </div>
+          <div class="audience-card">
+            <strong>D2C &amp; Shopify brands</strong>
+            Real margin after ads, COGS, and fees — not just top-line revenue.
+          </div>
+          <div class="audience-card">
+            <strong>Agencies &amp; consultants</strong>
+            See profit by client, monitor retainers, and send monthly summaries
+            your clients actually read.
+          </div>
+        </div>
+      </section>
+
+      <!-- DEMO -->
+      <section>
+        <h2 class="section-heading">A quick look inside METACFO.</h2>
+        <p class="section-sub">
+          Here’s the kind of context you’ll start getting daily — without
+          touching a spreadsheet.
+        </p>
+        <div class="demo-grid">
+          <div class="demo-main">
+            <div class="demo-header">
+              <div class="demo-header-label">This month</div>
+              <div class="demo-header-value">
+                Net profit +$12,470 &nbsp; (+8.3%)
+              </div>
+            </div>
+            <div class="demo-chart"></div>
+            <div class="demo-cols">
+              <div class="demo-col">
+                <span>Revenue</span>
+                <strong>$64,900</strong>
+              </div>
+              <div class="demo-col">
+                <span>Expenses</span>
+                <strong>$52,430</strong>
+              </div>
+              <div class="demo-col">
+                <span>Ad spend</span>
+                <strong>$13,200</strong>
+              </div>
+            </div>
+            <div class="demo-pill-row">
+              <div class="demo-pill">Shopify + Stripe + PayPal</div>
+              <div class="demo-pill">Meta &amp; Google Ads</div>
+              <div class="demo-pill">Inventory &amp; COGS</div>
+              <div class="demo-pill">Refunds &amp; fees</div>
+            </div>
+          </div>
+          <div class="demo-side">
+            <div class="demo-side-label">AI CFO chat</div>
+            <div class="chat-bubble">
+              <span>You asked</span>
+              Why did my profit drop last week?
+            </div>
+            <div class="chat-bubble">
+              <span>METACFO</span>
+              Your profit decreased by 18% week-over-week. Meta Ads overspent by
+              $432 on non-converting campaigns while COGS and refunds stayed
+              flat. Pausing the “Prospecting – Broad” ad set would have
+              preserved ~6.2% margin.
+            </div>
+            <div class="chat-input">
+              <span>Ask METACFO anything about your numbers…</span>
+              <span>↵</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PRICING -->
+      <section id="pricing">
+        <h2 class="section-heading">
+          Simple pricing. High clarity. No contracts.
+        </h2>
+        <p class="section-sub">
+          Start free, then upgrade when METACFO becomes the tab you open more
+          than your inbox.
+        </p>
+        <div class="pricing-grid">
+          <div class="pricing-card">
+            <div>
+              <div class="pricing-name">Starter</div>
+              <div class="pricing-price">$29<span>/month</span></div>
+              <ul class="pricing-list">
+                <li>Unlimited transactions</li>
+                <li>1 bank or card connection</li>
+                <li>Smart auto-categorization</li>
+                <li>Email &amp; receipt parsing</li>
+              </ul>
+            </div>
+            <div class="pricing-cta">Join Starter waitlist</div>
+          </div>
+          <div class="pricing-card highlight">
+            <div>
+              <div class="pricing-badge">Most popular</div>
+              <div class="pricing-name">Pro</div>
+              <div class="pricing-price">$79<span>/month</span></div>
+              <ul class="pricing-list">
+                <li>Everything in Starter</li>
+                <li>AI CFO chat &amp; anomaly alerts</li>
+                <li>Shopify, Stripe, Gumroad, PayPal</li>
+                <li>Forecasting &amp; runway view</li>
+                <li>Tax-ready summaries for your accountant</li>
+              </ul>
+            </div>
+            <div class="pricing-cta">Get early access to Pro</div>
+          </div>
+          <div class="pricing-card">
+            <div>
+              <div class="pricing-name">Premium</div>
+              <div class="pricing-price">$149<span>/month</span></div>
+              <ul class="pricing-list">
+                <li>Everything in Pro</li>
+                <li>Multiple businesses &amp; entities</li>
+                <li>Team access &amp; permissions</li>
+                <li>Accountant &amp; advisor workspace</li>
+                <li>API &amp; advanced exports</li>
+              </ul>
+            </div>
+            <div class="pricing-cta">Apply for Premium beta</div>
+          </div>
+        </div>
+        <p class="pricing-note">
+          Annual billing gets 2 months free. Pricing may change after the beta —
+          existing customers keep their plans.
+        </p>
+      </section>
+
+      <!-- TRUST -->
+      <section id="trust">
+        <h2 class="section-heading">Why founders trust METACFO.</h2>
+        <p class="section-sub">
+          METACFO is built by a founder who spent a decade building analytics
+          platforms — and another decade feeling the pain of running businesses
+          without clear numbers.
+        </p>
+        <div class="trust-grid">
+          <div>
+            <p>
+              The product is designed with three non-negotiables: accuracy,
+              privacy, and calm. We don’t sell your data, we don’t gamble with
+              your numbers, and we don’t spam you with vanity metrics.
+            </p>
+            <div class="trust-pill-row">
+              <div class="trust-pill">End-to-end encryption in transit</div>
+              <div class="trust-pill">Read-only bank connections</div>
+              <div class="trust-pill">Export anytime, no lock-in</div>
+            </div>
+          </div>
+          <div>
+            <p>
+              Before METACFO, our founder helped build a $400M+ ARR analytics
+              product at Adobe. Now that same level of clarity is coming to the
+              1–5 person businesses that actually move the world.
+            </p>
+            <div class="badge-row">
+              <div class="badge">Ex-Adobe analytics product lead</div>
+              <div class="badge">Designed for PLG &amp; D2C founders</div>
+              <div class="badge">Built by a founder, not a bank</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- FINAL CTA -->
+      <section id="cta" class="cta-final">
+        <div>
+          <h2>Your business has a story. Let METACFO tell it back to you.</h2>
+          <p>
+            Join the early access list and be one of the first founders to get
+            an AI CFO watching your numbers 24/7.
+          </p>
+        </div>
+        <div class="cta-final-actions">
+          <button class="btn-primary" onclick="window.location.href='/login'">
+            Get early access
+          </button>
+          <button class="btn-ghost">I want to see a sample report</button>
+        </div>
+      </section>
+
+      <!-- FOOTER -->
+      <footer>
+        <span>© <span id="year"></span> METACFO. All rights reserved.</span>
+        <span>
+          <a href="#">Privacy</a> · <a href="#">Security</a> ·
+          <a href="#">Contact</a>
+        </span>
+      </footer>
+    </div>
+
+    <script>
+      // Keep year current without needing to touch HTML again.
+      document.getElementById("year").textContent = new Date().getFullYear();
+    </script>
+  </body>
+</html>
