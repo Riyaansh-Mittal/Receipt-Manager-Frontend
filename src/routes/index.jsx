@@ -2,6 +2,8 @@ import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { ROUTES } from '../constants/routes.constants';
 
+import LandingPage from '../features/home/pages/LandingPage';
+
 // Layouts
 import MainLayout from '../components/layout/MainLayout';
 import AuthLayout from '../components/layout/AuthLayout';
@@ -45,10 +47,10 @@ const NotFoundPage = () => (
       <h1 className="text-6xl font-bold text-gray-900 mb-4">404</h1>
       <p className="text-xl text-gray-600 mb-8">Page not found</p>
       <a
-        href={ROUTES.HOME}
+        href={ROUTES.LOGIN}
         className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
       >
-        Go Home
+        Go to Login
       </a>
     </div>
   </div>
@@ -60,6 +62,9 @@ const NotFoundPage = () => (
 const AppRouter = () => {
   return (
     <Routes>
+      {/* ✅ LANDING PAGE - Served at root */}
+      <Route path="/" element={<LandingPage />} />
+
       {/* Public Routes */}
       <Route element={<AuthLayout />}>
         <Route
@@ -81,11 +86,10 @@ const AppRouter = () => {
           </AuthGuard>
         }
       >
-        <Route path={ROUTES.HOME} element={<Navigate to={ROUTES.DASHBOARD} replace />} />
         <Route path={ROUTES.DASHBOARD} element={<DashboardPage />} />
         <Route path={ROUTES.PROFILE} element={<ProfilePage />} />
         
-        {/* Receipt Routes - ORDER MATTERS! More specific routes first */}
+        {/* Receipt Routes */}
         <Route path={ROUTES.RECEIPTS_UPLOAD} element={<UploadReceiptPage />} />
         <Route path={ROUTES.RECEIPTS_REVIEW} element={<ReviewReceiptPage />} />
         <Route path={ROUTES.RECEIPTS_DETAIL} element={<ReceiptDetailPage />} />

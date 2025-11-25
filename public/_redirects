@@ -1,0 +1,5 @@
+﻿# Serve landing.html at root
+/               /landing.html   200
+
+# All other routes go to React index.html
+/*              /index.html     200
