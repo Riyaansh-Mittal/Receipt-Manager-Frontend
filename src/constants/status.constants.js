@@ -1,7 +1,6 @@
 export const ACCOUNT_STATUS = {
   ACTIVE: 'active',
-  INACTIVE: 'inactive',
-  LOCKED: 'locked',
+  INACTIVE: 'inactive'
 };
 
 export const REQUEST_STATUS = {

@@ -23,7 +23,7 @@ const initialState = {
     count: 0,
     currentPage: 1,
     totalPages: 0,
-    pageSize: 2,
+    pageSize: 20,
     hasNext: false,
     hasPrevious: false,
   },

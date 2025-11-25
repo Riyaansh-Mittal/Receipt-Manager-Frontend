@@ -36,7 +36,7 @@ const ReceiptsListPage = () => {
     status: currentFilters.status || "",
     ordering: currentFilters.ordering || "-created_at",
     page: pagination.currentPage || 1,
-    page_size: pagination.pageSize || 2,
+    page_size: pagination.pageSize || 20,
   });
 
   // Load receipts when filters change
@@ -139,11 +139,11 @@ const ReceiptsListPage = () => {
               onChange={(e) => handleFilterChange("status", e.target.value)}
               options={[
                 { value: "", label: "All Statuses" },
-                { value: RECEIPT_STATUS.UPLOADED, label: "Uploaded" },
-                { value: RECEIPT_STATUS.PROCESSING, label: "Processing" },
+                // { value: RECEIPT_STATUS.UPLOADED, label: "Uploaded" },
+                // { value: RECEIPT_STATUS.PROCESSING, label: "Processing" },
                 { value: RECEIPT_STATUS.PROCESSED, label: "Processed" },
                 { value: RECEIPT_STATUS.CONFIRMED, label: "Confirmed" },
-                { value: RECEIPT_STATUS.FAILED, label: "Failed" },
+                // { value: RECEIPT_STATUS.FAILED, label: "Failed" },
               ]}
             />
           </div>

@@ -118,12 +118,6 @@ const UserStats = () => {
               )}
             </span>
           </div>
-          <div className="flex justify-between text-sm">
-            <span className="text-gray-600">Last Login</span>
-            <span className="font-medium text-gray-900">
-              {stats.last_login ? formatDate(stats.last_login) : 'N/A'}
-            </span>
-          </div>
         </div>
       </div>
     </Card>

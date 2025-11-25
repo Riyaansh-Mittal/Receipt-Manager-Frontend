@@ -7,7 +7,7 @@ export const API_CONFIG = {
 export const API_ENDPOINTS = {
   AUTH: {
     MAGIC_LINK_REQUEST: '/auth/v1/magic-link/request/',
-    MAGIC_LINK_LOGIN: '/auth/v1/magic-link/login/',
+    MAGIC_LINK_LOGIN: '/auth/v1/magic-link/verify/',
     TOKEN_REFRESH: '/auth/v1/token/refresh/',
     TOKEN_STATUS: '/auth/v1/token/status/',
     LOGOUT: '/auth/v1/logout/',

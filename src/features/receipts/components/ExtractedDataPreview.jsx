@@ -146,7 +146,7 @@ const ExtractedDataPreview = ({ extractedData, confidenceScores }) => {
               Line Items
             </h4>
             <div className="space-y-2">
-              {line_items.slice(0, 5).map((item, index) => {
+              {line_items.slice(0, 7).map((item, index) => {
                 // Skip invalid items
                 if (!item || (!item.description && !item.amount)) {
                   return null;
@@ -168,16 +168,16 @@ const ExtractedDataPreview = ({ extractedData, confidenceScores }) => {
                       )}
                     </div>
                     <span className="font-medium text-gray-900 ml-4">
-                      {hasValue(item.amount) ? formatCurrency(item.amount, currency) : (
+                      {hasValue(item.price) ? formatCurrency(item.price, currency) : (
                         <span className="text-gray-400 italic">N/A</span>
                       )}
                     </span>
                   </div>
                 );
               })}
-              {line_items.length > 5 && (
+              {line_items.length > 7 && (
                 <p className="text-xs text-gray-500 text-center pt-2">
-                  +{line_items.length - 5} more items
+                  +{line_items.length - 7} more items
                 </p>
               )}
             </div>

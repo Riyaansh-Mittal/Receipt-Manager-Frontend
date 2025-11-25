@@ -76,9 +76,9 @@ const DashboardPage = () => {
             <button className="w-full text-left px-4 py-2 text-sm text-blue-600 hover:bg-blue-50 rounded-lg transition-colors">
               Upload Receipt
             </button>
-            <button className="w-full text-left px-4 py-2 text-sm text-blue-600 hover:bg-blue-50 rounded-lg transition-colors">
+            {/* <button className="w-full text-left px-4 py-2 text-sm text-blue-600 hover:bg-blue-50 rounded-lg transition-colors">
               View Ledger
-            </button>
+            </button> */}
           </div>
         </Card>
       </div>
