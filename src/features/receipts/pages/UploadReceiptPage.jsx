@@ -1,22 +1,26 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { useReceipt } from '../hooks/useReceipt';
-import { useFileUpload } from '../../../hooks/useFileUpload';
-import Card from '../../../components/ui/Card';
-import Button from '../../../components/ui/Button';
-import FileUpload from '../../../components/ui/FileUpload';
-import UploadProgress from '../components/UploadProgress';
-import DuplicateReceiptModal from '../components/DuplicateReceiptModal';
-import { showNotification } from '../../../store/slices/notification.slice';
-import { ROUTES } from '../../../constants/routes.constants';
-import { UPLOAD_CONFIG } from '../../../constants/api.constants';
-import { RECEIPT_STATUS } from '../../../constants/receipt.constants';
-import { normalizeStatus } from '../../../utils/receipt';
-import { RECEIPT_ERROR_CODES } from '../../../constants/error.constants';
-import { fetchQuotaStatus, invalidateCache as invalidateQuotaCache } from '../../../store/slices/quota.slice';
-import { useSelector } from 'react-redux';
-import { selectQuotaStatus } from '../../../store/slices/quota.slice';
+import React, { useState, useEffect, useRef, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { useReceipt } from "../hooks/useReceipt";
+import { useFileUpload } from "../../../hooks/useFileUpload";
+import Card from "../../../components/ui/Card";
+import Button from "../../../components/ui/Button";
+import FileUpload from "../../../components/ui/FileUpload";
+import UploadProgress from "../components/UploadProgress";
+import DuplicateReceiptModal from "../components/DuplicateReceiptModal";
+import { showNotification } from "../../../store/slices/notification.slice";
+import { ROUTES } from "../../../constants/routes.constants";
+import { UPLOAD_CONFIG } from "../../../constants/api.constants";
+import { RECEIPT_STATUS } from "../../../constants/receipt.constants";
+import { normalizeStatus } from "../../../utils/receipt";
+import { RECEIPT_ERROR_CODES } from "../../../constants/error.constants";
+import {
+  fetchQuotaStatus,
+  invalidateCache as invalidateQuotaCache,
+} from "../../../store/slices/quota.slice";
+import { useSelector } from "react-redux";
+import { selectQuotaStatus } from "../../../store/slices/quota.slice";
+import { fetchUserStats } from '../../../store/slices/auth.slice';
 
 /**
  * Upload Receipt Page with Correct Flow
@@ -24,13 +28,8 @@ import { selectQuotaStatus } from '../../../store/slices/quota.slice';
 const UploadReceiptPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const {
-    uploadProgress,
-    isUploading,
-    handleUpload,
-    pollStatus,
-    resetUpload,
-  } = useReceipt();
+  const { uploadProgress, isUploading, handleUpload, pollStatus, resetUpload } =
+    useReceipt();
 
   const quotaStatus = useSelector(selectQuotaStatus);
 
@@ -48,7 +47,7 @@ const UploadReceiptPage = () => {
     quality: 0.85,
   });
 
-  const [uploadStage, setUploadStage] = useState('select');
+  const [uploadStage, setUploadStage] = useState("select");
   const [processingData, setProcessingData] = useState({
     progress: 0,
     stage: null,
@@ -57,7 +56,7 @@ const UploadReceiptPage = () => {
   const [duplicateModal, setDuplicateModal] = useState({
     isOpen: false,
     existingReceiptId: null,
-    message: '',
+    message: "",
   });
 
   // Refs for polling - USE ONLY ONE SOURCE OF TRUTH
@@ -71,34 +70,47 @@ const UploadReceiptPage = () => {
     dispatch(fetchQuotaStatus());
   }, [dispatch]);
 
+  const syncUserStats = useCallback(async () => {
+    try {
+      // Always get latest stats from backend
+      await dispatch(fetchUserStats()).unwrap();
+    } catch (error) {
+      console.error("Failed to refresh user stats:", error);
+      // Do NOT block navigation on stats failure
+    }
+  }, [dispatch]);
+
   // Polling function - FIXED to use correct receipt ID
   const checkUploadStatus = useCallback(async () => {
     const receiptId = currentReceiptIdRef.current;
-    
+
     if (!receiptId) {
-      console.log('❌ No receipt ID, stopping poll');
+      console.log("❌ No receipt ID, stopping poll");
       return true;
     }
 
     pollingAttemptsRef.current += 1;
 
     try {
-      console.log(`🔄 Polling attempt ${pollingAttemptsRef.current} for receipt: ${receiptId}`);
+      console.log(
+        `🔄 Polling attempt ${pollingAttemptsRef.current} for receipt: ${receiptId}`
+      );
       const statusData = await pollStatus(receiptId);
-      
+
       if (!statusData) {
-        console.log('⚠️ No status data received');
+        console.log("⚠️ No status data received");
         return false;
       }
 
-      const { status, progress_percentage, current_stage, error_message } = statusData;
+      const { status, progress_percentage, current_stage, error_message } =
+        statusData;
       const normalizedStatus = normalizeStatus(status);
-      
-      console.log('📊 Status update:', { 
+
+      console.log("📊 Status update:", {
         receiptId,
-        status: normalizedStatus, 
-        progress: progress_percentage, 
-        stage: current_stage 
+        status: normalizedStatus,
+        progress: progress_percentage,
+        stage: current_stage,
       });
 
       // Update processing data
@@ -109,26 +121,29 @@ const UploadReceiptPage = () => {
       });
 
       // ✅ Check if processing is complete
-      if (normalizedStatus === RECEIPT_STATUS.PROCESSED || 
-          normalizedStatus === RECEIPT_STATUS.COMPLETED ||
-          progress_percentage === 100) {
-        console.log('✅ Processing complete!');
+      if (
+        normalizedStatus === RECEIPT_STATUS.PROCESSED ||
+        normalizedStatus === RECEIPT_STATUS.COMPLETED ||
+        progress_percentage === 100
+      ) {
+        console.log("✅ Processing complete!");
         stopPolling();
-        setUploadStage('complete');
-        
+        setUploadStage("complete");
+
         dispatch(
           showNotification({
-            type: 'success',
-            message: 'Receipt processed successfully!',
+            type: "success",
+            message: "Receipt processed successfully!",
           })
         );
 
         // Invalidate quota cache
         dispatch(invalidateQuotaCache());
+        await syncUserStats();
 
         // Navigate to review page with CORRECT receipt ID
         setTimeout(() => {
-          navigate(ROUTES.RECEIPTS_REVIEW.replace(':id', receiptId));
+          navigate(ROUTES.RECEIPTS_REVIEW.replace(":id", receiptId));
         }, 1500);
 
         return true;
@@ -136,62 +151,68 @@ const UploadReceiptPage = () => {
 
       // ❌ Check if processing failed
       if (normalizedStatus === RECEIPT_STATUS.FAILED) {
-        console.log('❌ Processing failed');
+        console.log("❌ Processing failed");
         stopPolling();
         dispatch(
           showNotification({
-            type: 'error',
-            message: error_message || 'Receipt processing failed. Please try again.',
+            type: "error",
+            message:
+              error_message || "Receipt processing failed. Please try again.",
             duration: 8000,
           })
         );
-        setUploadStage('select');
+        setUploadStage("select");
         resetUpload();
         currentReceiptIdRef.current = null;
+        await syncUserStats();
         return true;
       }
 
       // ⏱️ Check max attempts
       if (pollingAttemptsRef.current >= MAX_POLLING_ATTEMPTS) {
-        console.log('⏱️ Max polling attempts reached');
+        console.log("⏱️ Max polling attempts reached");
         stopPolling();
         dispatch(
           showNotification({
-            type: 'warning',
-            message: 'Processing is taking longer than expected. You can check the receipt status in your receipts list.',
+            type: "warning",
+            message:
+              "Processing is taking longer than expected. You can check the receipt status in your receipts list.",
             duration: 10000,
           })
         );
+        await syncUserStats();
         navigate(ROUTES.RECEIPTS);
         return true;
       }
 
       return false;
     } catch (error) {
-      console.error('❌ Polling error:', error);
-      
+      console.error("❌ Polling error:", error);
+
       if (pollingAttemptsRef.current >= MAX_POLLING_ATTEMPTS) {
         stopPolling();
         dispatch(
           showNotification({
-            type: 'error',
-            message: 'Unable to check processing status. Please check your receipts list.',
+            type: "error",
+            message:
+              "Unable to check processing status. Please check your receipts list.",
           })
         );
+        await syncUserStats();
         navigate(ROUTES.RECEIPTS);
         return true;
       }
-      
+
       return false;
     }
-  }, [pollStatus, dispatch, navigate, resetUpload]);
+  }, [pollStatus, dispatch, navigate, resetUpload, syncUserStats]);
 
   // Start polling
   const startPolling = useCallback(() => {
-    console.log('▶️ Starting polling...');
-    
+    console.log("▶️ Starting polling...");
+
     if (pollingIntervalRef.current) {
-      console.log('⚠️ Polling already active');
+      console.log("⚠️ Polling already active");
       return;
     }
 
@@ -208,7 +229,7 @@ const UploadReceiptPage = () => {
 
   // Stop polling
   const stopPolling = useCallback(() => {
-    console.log('⏹️ Stopping polling...');
+    console.log("⏹️ Stopping polling...");
     if (pollingIntervalRef.current) {
       clearInterval(pollingIntervalRef.current);
       pollingIntervalRef.current = null;
@@ -230,7 +251,7 @@ const UploadReceiptPage = () => {
     if (quotaStatus && quotaStatus.quota_exceeded) {
       dispatch(
         showNotification({
-          type: 'error',
+          type: "error",
           message: `Monthly upload limit reached (${quotaStatus.current_month_uploads}/${quotaStatus.monthly_limit}). Resets on ${quotaStatus.reset_date}`,
           duration: 8000,
         })
@@ -238,8 +259,8 @@ const UploadReceiptPage = () => {
       return;
     }
 
-    setUploadStage('uploading');
-    
+    setUploadStage("uploading");
+
     // ✅ CLEAR OLD RECEIPT ID BEFORE UPLOAD
     currentReceiptIdRef.current = null;
 
@@ -249,39 +270,42 @@ const UploadReceiptPage = () => {
     if (result === true) {
       // Success - NOW extract the receipt ID from the response
       // The handleUpload should return the response data
-      console.log('✅ Upload successful, waiting for receipt ID...');
-      
+      console.log("✅ Upload successful, waiting for receipt ID...");
+
       // Give Redux state a moment to update
       setTimeout(() => {
         // We need to get the receipt ID from somewhere
         // Let's modify handleUpload to return it
       }, 100);
-      
-    } else if (result && typeof result === 'object' && result.success === false) {
+    } else if (
+      result &&
+      typeof result === "object" &&
+      result.success === false
+    ) {
       // Handle errors
       if (result.error === RECEIPT_ERROR_CODES.DUPLICATE_RECEIPT) {
-        setUploadStage('select');
+        setUploadStage("select");
         setDuplicateModal({
           isOpen: true,
           existingReceiptId: result.existingReceiptId,
           message: result.message,
         });
       } else {
-        setUploadStage('select');
+        setUploadStage("select");
       }
     } else if (result && result.receiptId) {
       // ✅ SUCCESS WITH RECEIPT ID
       const receiptId = result.receiptId;
-      console.log('✅ Upload successful, received receipt ID:', receiptId);
-      
+      console.log("✅ Upload successful, received receipt ID:", receiptId);
+
       // SET THE RECEIPT ID
       currentReceiptIdRef.current = receiptId;
-      
-      setUploadStage('processing');
+
+      setUploadStage("processing");
       dispatch(invalidateQuotaCache());
       startPolling();
     } else {
-      setUploadStage('select');
+      setUploadStage("select");
     }
   };
 
@@ -289,7 +313,7 @@ const UploadReceiptPage = () => {
     stopPolling();
     resetUpload();
     resetFileUpload();
-    setUploadStage('select');
+    setUploadStage("select");
     currentReceiptIdRef.current = null;
     setProcessingData({ progress: 0, stage: null, status: null });
   };
@@ -303,14 +327,25 @@ const UploadReceiptPage = () => {
       {/* Duplicate Receipt Modal */}
       <DuplicateReceiptModal
         isOpen={duplicateModal.isOpen}
-        onClose={() => setDuplicateModal({ isOpen: false, existingReceiptId: null, message: '' })}
+        onClose={() =>
+          setDuplicateModal({
+            isOpen: false,
+            existingReceiptId: null,
+            message: "",
+          })
+        }
         existingReceiptId={duplicateModal.existingReceiptId}
         message={duplicateModal.message}
       />
 
       {/* Header */}
       <div>
-        <Button variant="outline" size="sm" onClick={handleBack} className="mb-4">
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={handleBack}
+          className="mb-4"
+        >
           ← Back to Receipts
         </Button>
         <h1 className="text-3xl font-bold text-gray-900">Upload Receipt</h1>
@@ -324,10 +359,13 @@ const UploadReceiptPage = () => {
         <Card className="bg-blue-50 border-blue-200">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-blue-900">Monthly Uploads</p>
+              <p className="text-sm font-medium text-blue-900">
+                Monthly Uploads
+              </p>
               <p className="text-xs text-blue-700 mt-1">
-                {quotaStatus.current_month_uploads || 0} of {quotaStatus.monthly_limit} used
-                ({quotaStatus.remaining_uploads} remaining)
+                {quotaStatus.current_month_uploads || 0} of{" "}
+                {quotaStatus.monthly_limit} used (
+                {quotaStatus.remaining_uploads} remaining)
               </p>
             </div>
             <div className="text-right">
@@ -347,7 +385,7 @@ const UploadReceiptPage = () => {
 
       {/* Main Content */}
       <Card>
-        {uploadStage === 'select' && (
+        {uploadStage === "select" && (
           <div className="space-y-6">
             <FileUpload
               file={file}
@@ -356,7 +394,7 @@ const UploadReceiptPage = () => {
               isProcessing={isFileProcessing}
               onFileSelect={handleFileSelect}
               onClear={clearFile}
-              accept={UPLOAD_CONFIG.ALLOWED_TYPES.join(',')}
+              accept={UPLOAD_CONFIG.ALLOWED_TYPES.join(",")}
               maxSize={UPLOAD_CONFIG.MAX_FILE_SIZE}
             />
 
@@ -394,34 +432,55 @@ const UploadReceiptPage = () => {
           </div>
         )}
 
-        {(uploadStage === 'uploading' || uploadStage === 'processing') && (
+        {(uploadStage === "uploading" || uploadStage === "processing") && (
           <div className="space-y-6">
             <div className="text-center">
               <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                {uploadStage === 'uploading' ? 'Uploading Receipt...' : 'Processing Receipt...'}
+                {uploadStage === "uploading"
+                  ? "Uploading Receipt..."
+                  : "Processing Receipt..."}
               </h3>
               <p className="text-sm text-gray-600">
-                {uploadStage === 'uploading'
-                  ? 'Securely uploading your file'
-                  : 'Extracting data and categorizing'}
+                {uploadStage === "uploading"
+                  ? "Securely uploading your file"
+                  : "Extracting data and categorizing"}
               </p>
             </div>
 
             <UploadProgress
               receipt={null}
-              progress={uploadStage === 'uploading' ? uploadProgress : processingData.progress}
+              progress={
+                uploadStage === "uploading"
+                  ? uploadProgress
+                  : processingData.progress
+              }
               stage={processingData.stage}
             />
 
             {/* Debug Info */}
-            {process.env.NODE_ENV === 'development' && (
+            {process.env.NODE_ENV === "development" && (
               <div className="p-3 bg-gray-100 rounded text-xs font-mono">
-                <p><strong>Current Receipt ID:</strong> {currentReceiptIdRef.current || 'None'}</p>
-                <p><strong>Status:</strong> {processingData.status || 'N/A'}</p>
-                <p><strong>Progress:</strong> {processingData.progress}%</p>
-                <p><strong>Stage:</strong> {processingData.stage || 'N/A'}</p>
-                <p><strong>Polling Active:</strong> {pollingIntervalRef.current ? 'Yes' : 'No'}</p>
-                <p><strong>Attempts:</strong> {pollingAttemptsRef.current}/{MAX_POLLING_ATTEMPTS}</p>
+                <p>
+                  <strong>Current Receipt ID:</strong>{" "}
+                  {currentReceiptIdRef.current || "None"}
+                </p>
+                <p>
+                  <strong>Status:</strong> {processingData.status || "N/A"}
+                </p>
+                <p>
+                  <strong>Progress:</strong> {processingData.progress}%
+                </p>
+                <p>
+                  <strong>Stage:</strong> {processingData.stage || "N/A"}
+                </p>
+                <p>
+                  <strong>Polling Active:</strong>{" "}
+                  {pollingIntervalRef.current ? "Yes" : "No"}
+                </p>
+                <p>
+                  <strong>Attempts:</strong> {pollingAttemptsRef.current}/
+                  {MAX_POLLING_ATTEMPTS}
+                </p>
               </div>
             )}
 
@@ -437,7 +496,7 @@ const UploadReceiptPage = () => {
           </div>
         )}
 
-        {uploadStage === 'complete' && (
+        {uploadStage === "complete" && (
           <div className="text-center space-y-4">
             <svg
               className="mx-auto h-16 w-16 text-green-500"
@@ -452,7 +511,9 @@ const UploadReceiptPage = () => {
                 d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
               />
             </svg>
-            <h3 className="text-xl font-semibold text-gray-900">Processing Complete!</h3>
+            <h3 className="text-xl font-semibold text-gray-900">
+              Processing Complete!
+            </h3>
             <p className="text-gray-600">Redirecting to review page...</p>
           </div>
         )}

@@ -83,6 +83,6 @@ export const DEFAULT_CURRENCY = 'USD';
 export const RECEIPT_SORT_OPTIONS = [
   { value: '-created_at', label: 'Newest First' },
   { value: 'created_at', label: 'Oldest First' },
-  { value: '-updated_at', label: 'Recently Updated' },
-  { value: 'updated_at', label: 'Least Recently Updated' },
+  // { value: '-updated_at', label: 'Recently Updated' },
+  // { value: 'updated_at', label: 'Least Recently Updated' },
 ];

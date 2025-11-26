@@ -1,5 +1,7 @@
 import React from 'react';
 import { useAuth } from '../../auth/hooks/useAuth';
+import { useSelector } from 'react-redux';
+import { selectUserStats } from '../../../store/slices/auth.slice';
 import Card from '../../../components/ui/Card';
 import Badge from '../../../components/ui/Badge';
 
@@ -8,6 +10,7 @@ import Badge from '../../../components/ui/Badge';
  */
 const DashboardPage = () => {
   const { user } = useAuth();
+  const stats = useSelector(selectUserStats);
 
   return (
     <div className="max-w-7xl mx-auto">
@@ -47,7 +50,7 @@ const DashboardPage = () => {
             <h3 className="text-lg font-semibold text-gray-900">
               Monthly Uploads
             </h3>
-            <Badge variant="info">{user?.monthly_upload_count || 0}</Badge>
+            <Badge variant="info">{Math.max(user?.monthly_upload_count || 0, stats?.upload_count || 0)}</Badge>
           </div>
           <p className="text-gray-600 text-sm">
             Receipts uploaded this month
